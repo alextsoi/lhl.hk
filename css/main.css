@@ -61,6 +61,16 @@ canvas {
   margin-left: 10px;
   font-size: 1em; }
 
+#toggle-style {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  font-size: 16px;
+  padding: 5px 10px;
+  border: #000 1px solid;
+  background-color: white; }
+
 @media (max-width: 1024px) {
   #map-wrapper {
     flex-direction: column; }
@@ -89,6 +99,4 @@ canvas {
 @media (max-width: 500px) {
   #map-list-items > li.summary {
     width: calc(100vw - 100px);
-    min-width: 250px; }
-  #toggle-style {
-    display: none; } }
+    min-width: 250px; } }
