@@ -29,14 +29,16 @@
 			return marks;
 		}
 
-		var numberOfRoutes = 54;
+		var numberOfRoutes = 58;
 		mapboxgl.accessToken = "pk.eyJ1IjoieWZ0c29peWZ0c29pIiwiYSI6ImNqcnAweTdsbTE5OG40NHA5b2VvaW05Y3UifQ.W_WnayZjcP21QE4h-eFYYQ";
 
 		var currentStyle = 'styleFlat';
 		var colorStyles = {
 			styleFlat: {
-				default: '#ef476f',
-				selected: '#073b4c'
+				// default: '#ef476f',
+				// selected: '#073b4c'
+				default: '#ee6c4d',
+				selected: '#3d5a80'
 			},
 			style3d: {
 				//default: '#ffadad',
@@ -62,7 +64,8 @@
 				container: "map",
 				otherStyleId: 'style3d',
 				otherStyle: '3D Mode',
-				style: "mapbox://styles/yftsoiyftsoi/cjrp3f4uk5m1n2spc8w7jrqoi",
+				// style: "mapbox://styles/yftsoiyftsoi/cjrp3f4uk5m1n2spc8w7jrqoi",
+				style: "mapbox://styles/yftsoiyftsoi/ckuz0riu70dnu14lr9gcnmw5i",
 				zoom: 10.5,
 				center: [114.1535941, 22.3700556],
 			}
@@ -169,7 +172,7 @@
 
 		var mapData = {};
 		var selectedRoute = null;
-		var template = '<li data-index="{index}"><div class="title"><strong>{name}</strong></div><div class="time">{time}</time><div class="length">{length}</div></li>';
+		var template = '<li data-index="{index}"><div class="title">{name}</div><div class="time">{time}</time><div class="length">{length}</div></li>';
 		var loaded = 0;
 		var finished = false;
 

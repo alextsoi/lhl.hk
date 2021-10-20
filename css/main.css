@@ -1,11 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300&display=swap");
 html, body {
+  color: #293241;
   padding: 0;
   margin: 0;
-  font-family: 'Open Sans', sans-serif; }
+  font-family: PingFangHK-Light, 'Noto Sans TC', sans-serif; }
 
 * {
-  font-family: 'Open Sans', sans-serif;
+  font-family: PingFangHK-Light, 'Noto Sans TC', sans-serif;
   font-size: 16px; }
 
 html {
@@ -39,17 +40,23 @@ canvas {
   flex-wrap: wrap;
   padding: 0;
   list-style: none;
-  margin: 0; }
+  margin: 0;
+  background-color: #e0fbfc; }
 
 #map-list-items > li {
   padding: 15px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #293241;
   width: 100%;
-  transition: background-color 250ms; }
+  transition: background-color 250ms;
+  color: #293241; }
+  #map-list-items > li.summary {
+    background-color: #3d5a80;
+    color: #e0fbfc; }
   #map-list-items > li:not(.summary) {
     cursor: pointer; }
     #map-list-items > li:not(.summary):hover, #map-list-items > li:not(.summary).active {
-      background-color: #f0f0f0; }
+      background-color: #3d5a80;
+      color: #e0fbfc; }
 
 #map-list-items > li:last-child {
   border-bottom-width: 0; }
@@ -68,8 +75,9 @@ canvas {
   z-index: 100;
   font-size: 16px;
   padding: 5px 10px;
-  border: #000 1px solid;
-  background-color: white; }
+  border: #293241 1px solid;
+  color: #293241;
+  background-color: #e0fbfc; }
 
 @media (max-width: 1024px) {
   #map-wrapper {
@@ -92,7 +100,7 @@ canvas {
     width: auto;
     min-width: 180px;
     border-bottom-width: 0;
-    border-right: 1px solid #eeeeee; }
+    border-right: 1px solid #293241; }
   #map-list-items > li:last-child {
     border-right-width: 0; } }
 
