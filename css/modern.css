@@ -62,8 +62,10 @@ body {
 }
 
 .header-title svg {
-  width: 24px;
-  height: 24px;
+  width: 60px;
+  height: 45px;
+  margin-right: 0.5rem;
+  color: var(--light);
 }
 
 .sidebar {
@@ -357,6 +359,11 @@ body {
 
   .sidebar.mobile-show .map-list-container {
     overflow-y: auto;
+  }
+
+  .header-title svg {
+    width: 54px;
+    height: 40px;
   }
 }
 
