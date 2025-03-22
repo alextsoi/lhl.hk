@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +21,14 @@
   <link href="css/modern.css" rel="stylesheet">
   <!-- Custom JS -->
   <script src="js/map-utils.js"></script>
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="LHL" />
+  <link rel="manifest" href="/site.webmanifest" />
 </head>
+
 <body>
   <div class="app-container">
     <!-- Header -->
@@ -31,23 +39,25 @@
           <g transform="translate(15, 15)">
             <!-- Left L (mirrored) -->
             <g transform="translate(0, 0) scale(1, 1)">
-              <path d="M 20,0 L 20,30 L 0,30 L 0,25 L 15,25 L 15,0 Z" fill="currentColor"/>
+              <path d="M 20,0 L 20,30 L 0,30 L 0,25 L 15,25 L 15,0 Z" fill="currentColor" />
             </g>
-            
+
             <!-- Middle H -->
             <g transform="translate(25, 0) scale(1, 1)">
-              <path d="M 0,0 L 0,30 L 5,30 L 5,18 L 15,18 L 15,30 L 20,30 L 20,0 L 15,0 L 15,13 L 5,13 L 5,0 Z" fill="currentColor"/>
+              <path d="M 0,0 L 0,30 L 5,30 L 5,18 L 15,18 L 15,30 L 20,30 L 20,0 L 15,0 L 15,13 L 5,13 L 5,0 Z"
+                fill="currentColor" />
             </g>
-            
+
             <!-- Right L (normal) -->
             <g transform="translate(50, 0) scale(1, 1)">
-              <path d="M 0,0 L 0,30 L 20,30 L 20,25 L 5,25 L 5,0 Z" fill="currentColor"/>
+              <path d="M 0,0 L 0,30 L 20,30 L 20,25 L 5,25 L 5,0 Z" fill="currentColor" />
             </g>
           </g>
         </svg>
       </div>
       <div id="mobile-toggle-sidebar" class="button">
-        <svg class="mobile-toggle-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="mobile-toggle-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="4" y1="8" x2="20" y2="8"></line>
           <line x1="4" y1="16" x2="20" y2="16"></line>
         </svg>
@@ -62,7 +72,7 @@
           <div class="stat-title">Total Distance</div>
           <div id="total-distance" class="stat-value">0 km</div>
         </div>
-        
+
         <div class="stat-card">
           <div class="stat-title">Yearly Goal Progress</div>
           <div id="yearly-distance" class="stat-value">0 / 500 km</div>
@@ -73,7 +83,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Track List -->
       <div class="map-list-container">
         <ul id="map-list-items"></ul>
@@ -83,26 +93,28 @@
     <!-- Map Container -->
     <div class="map-container">
       <div id="map"></div>
-      
+
       <!-- Map Controls -->
       <div class="map-controls">
         <button id="toggle-style" class="button button-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
             <line x1="12" y1="22" x2="12" y2="15.5"></line>
             <polyline points="22 8.5 12 15.5 2 8.5"></polyline>
           </svg>
           3D Mode
         </button>
-        
+
         <div class="button" id="toggle-layers">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
             <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
           </svg>
           Map Layers
         </div>
-        
+
         <div class="layers-dropdown" id="layers-dropdown" style="display: none;">
           <div class="layers-dropdown-item">
             <label>
@@ -130,7 +142,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Loading Overlay -->
       <div id="loading-overlay" class="loading-overlay">
         <div class="loading-spinner"></div>
@@ -144,7 +156,7 @@
     var extra = [51, 55, 66];
     var numberOfRoutes = 114;
     var yearlyGoal = 500;
-    
+
     // Mapbox configuration
     mapboxgl.accessToken = "pk.eyJ1IjoieWZ0c29peWZ0c29pIiwiYSI6ImNqcnAweTdsbTE5OG40NHA5b2VvaW05Y3UifQ.W_WnayZjcP21QE4h-eFYYQ";
 
@@ -159,7 +171,7 @@
         selected: '#073b4c'
       }
     };
-    
+
     var mapStyle = {
       style3d: {
         container: "map",
@@ -211,31 +223,31 @@
 
     function updateStats() {
       if (!finished) return;
-      
-      var keys = Object.keys(mapData).sort(function(a, b) {
+
+      var keys = Object.keys(mapData).sort(function (a, b) {
         return b - a;
       });
-      
+
       var total = 0;
       var yearTotal = 0;
       var currentYear = (new Date()).getFullYear();
-      
-      keys.forEach(function(key) {
+
+      keys.forEach(function (key) {
         total += parseFloat(mapData[key].length);
         var thisYear = parseInt(mapData[key].time.substr(0, 4));
         if (thisYear === currentYear) {
           yearTotal += parseFloat(mapData[key].length);
         }
       });
-      
+
       // Update stats in the UI
       $('#total-distance').text(total.toFixed(2) + ' km');
       $('#yearly-distance').text(yearTotal.toFixed(2) + ' / ' + yearlyGoal + ' km');
-      
+
       // Update progress bar
       var progressPercent = Math.min(100, (yearTotal / yearlyGoal) * 100);
       $('#yearly-progress').css('width', progressPercent + '%');
-      
+
       // Change progress bar color based on completion
       if (progressPercent >= 100) {
         $('#yearly-progress').css('background-color', 'var(--success)');
@@ -249,22 +261,22 @@
     function triggerSorting() {
       if (finished) return;
       loaded++;
-      
-      var keys = Object.keys(mapData).sort(function(a, b) {
+
+      var keys = Object.keys(mapData).sort(function (a, b) {
         return b - a;
       });
-      
+
       $('#map-list-items').html('');
-      
-      keys.forEach(function(key) {
+
+      keys.forEach(function (key) {
         var trackName = mapData[key].name.replace('**', '');
         var trackTime = mapData[key].time;
         var trackLength = mapData[key].length;
-        
+
         var trackItemHtml = createTrackItemTemplate(key, trackName, trackTime, trackLength);
         $('#map-list-items').append(trackItemHtml);
       });
-      
+
       if (loaded === (numberOfRoutes + extra.length)) {
         finished = true;
         updateStats();
@@ -282,12 +294,12 @@
           data: data
         };
       }
-      
+
       map.addSource('route' + index, {
         'type': 'geojson',
         'data': data
       });
-      
+
       map.addLayer({
         'id': 'route' + index,
         'type': 'line',
@@ -301,7 +313,7 @@
           'line-width': 2
         }
       });
-      
+
       triggerSorting();
     }
 
@@ -313,29 +325,29 @@
           'tileSize': 512,
           'maxzoom': 14
         });
-        
+
         map.setTerrain({
           'source': 'mapbox-dem',
           'exaggeration': 2
         });
       }
-      
+
       for (var i = 1; i <= numberOfRoutes; i++) {
-        (function(index) {
+        (function (index) {
           if (extra.indexOf(index) !== -1) {
             if (typeof mapData[index] !== 'undefined') {
               drawAgain(null, index + '-1');
             } else {
-              $.getJSON('./geojson/' + index + '-1.geojson', function(data) {
+              $.getJSON('./geojson/' + index + '-1.geojson', function (data) {
                 drawAgain(data, index + '-1');
               });
             }
           }
-          
+
           if (typeof mapData[index] !== 'undefined') {
             drawAgain(null, index);
           } else {
-            $.getJSON('./geojson/' + index + '.geojson', function(data) {
+            $.getJSON('./geojson/' + index + '.geojson', function (data) {
               drawAgain(data, index);
             });
           }
@@ -352,52 +364,52 @@
         </svg>
         ${mapStyle[currentStyle].otherStyle}
       `);
-      
+
       map = new mapboxgl.Map(mapStyle[currentStyle]);
       map.on('load', onLoad);
     }
 
     // Initialize the map
-    $(document).ready(function() {
+    $(document).ready(function () {
       refreshStyle();
-      
+
       // Track selection
-      $('body').on('click', '.track-item', function(e) {
+      $('body').on('click', '.track-item', function (e) {
         e.preventDefault();
         $('.track-item').removeClass('active');
-        
+
         $(this).addClass('active');
         var index = $(this).data('index');
-        
+
         if (lastSelectedLayer) {
           map.setPaintProperty('route' + lastSelectedLayer, 'line-color', colorStyles[currentStyle].default);
           map.setPaintProperty('route' + lastSelectedLayer, 'line-width', 1);
         }
-        
+
         lastSelectedLayer = index;
-        
+
         if (typeof index !== 'undefined' && typeof mapData[index].data !== 'undefined') {
           var coordinates = [];
-          
+
           if (mapData[index].data.features[0].geometry.type === 'LineString') {
             coordinates = mapData[index].data.features[0].geometry.coordinates;
           } else {
-            mapData[index].data.features[0].geometry.coordinates.map(function(coord) {
+            mapData[index].data.features[0].geometry.coordinates.map(function (coord) {
               coordinates = coordinates.concat(coord);
             });
           }
-          
-          var bounds = coordinates.reduce(function(bounds, coord) {
+
+          var bounds = coordinates.reduce(function (bounds, coord) {
             return bounds.extend(coord);
           }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
 
           map.fitBounds(bounds, {
             padding: 40
           });
-          
+
           map.setPaintProperty('route' + lastSelectedLayer, 'line-color', colorStyles[currentStyle].selected);
           map.setPaintProperty('route' + lastSelectedLayer, 'line-width', 3);
-          
+
           // Close sidebar in mobile view
           if (window.innerWidth <= 768) {
             $('.sidebar').removeClass('mobile-show');
@@ -412,7 +424,7 @@
       });
 
       // Toggle map style button
-      $('#toggle-style').on('click', function(e) {
+      $('#toggle-style').on('click', function (e) {
         if (!finished) {
           alert('Please wait until all hiking tracks are loaded!');
           return;
@@ -420,7 +432,7 @@
         currentStyle = mapStyle[currentStyle].otherStyleId;
         refreshStyle();
       });
-      
+
       // Adjust sidebar height to match stats container on mobile
       function adjustSidebarHeight() {
         if (window.innerWidth <= 768) {
@@ -431,11 +443,11 @@
         } else {
           $('.sidebar').css('height', '');
         }
-        
+
         // Adjust map-list-container height to fill available space
         adjustMapListHeight();
       }
-      
+
       // Adjust map list container height
       function adjustMapListHeight() {
         if (window.innerWidth <= 768 && $('.sidebar').hasClass('mobile-show')) {
@@ -464,12 +476,12 @@
       // Run on page load and when window is resized
       adjustSidebarHeight();
       $(window).on('resize', adjustSidebarHeight);
-      
+
       // Mobile sidebar toggle with height adjustment
-      $('#mobile-toggle-sidebar').on('click', function() {
+      $('#mobile-toggle-sidebar').on('click', function () {
         $('.sidebar').toggleClass('mobile-show');
         $(this).toggleClass('mobile-menu-open');
-        
+
         // Immediately adjust height when toggling
         if (window.innerWidth <= 768) {
           if ($('.sidebar').hasClass('mobile-show')) {
@@ -487,12 +499,12 @@
       });
 
       // Map layers dropdown toggle
-      $('#toggle-layers').on('click', function(e) {
+      $('#toggle-layers').on('click', function (e) {
         $('#layers-dropdown').toggle();
       });
 
       // Handle layer toggles
-      $('#toggle-all-tracks').on('change', function() {
+      $('#toggle-all-tracks').on('change', function () {
         var visible = $(this).is(':checked');
         for (var i = 1; i <= numberOfRoutes; i++) {
           if (map.getLayer('route' + i)) {
@@ -504,7 +516,7 @@
         }
       });
 
-      $('#toggle-terrain').on('change', function() {
+      $('#toggle-terrain').on('change', function () {
         var enabled = $(this).is(':checked');
         if (map.getTerrain()) {
           if (enabled) {
@@ -517,10 +529,10 @@
         }
       });
 
-      $('#toggle-current-year').on('change', function() {
+      $('#toggle-current-year').on('change', function () {
         var currentYearOnly = $(this).is(':checked');
         var currentYear = (new Date()).getFullYear();
-        
+
         for (var i = 1; i <= numberOfRoutes; i++) {
           if (map.getLayer('route' + i)) {
             var routeYear = mapData[i] ? parseInt(mapData[i].time.substr(0, 4)) : 0;
@@ -530,7 +542,7 @@
               map.setLayoutProperty('route' + i, 'visibility', 'visible');
             }
           }
-          
+
           if (map.getLayer('route' + i + '-1')) {
             var routeYearExt = mapData[i + '-1'] ? parseInt(mapData[i + '-1'].time.substr(0, 4)) : 0;
             if (currentYearOnly && routeYearExt !== currentYear) {
@@ -542,20 +554,20 @@
         }
       });
 
-      $('#toggle-heatmap').on('change', function() {
+      $('#toggle-heatmap').on('change', function () {
         var enabled = $(this).is(':checked');
         if (enabled) {
           // Create heatmap using the MapUtils function
           if (finished) {
             var allTracks = [];
             var keys = Object.keys(mapData);
-            
-            keys.forEach(function(key) {
+
+            keys.forEach(function (key) {
               if (mapData[key] && mapData[key].data) {
                 allTracks.push(mapData[key]);
               }
             });
-            
+
             MapUtils.createTrackHeatmap(map, allTracks);
           } else {
             alert('Please wait until all hiking tracks are loaded!');
@@ -566,7 +578,7 @@
           if (map.getLayer('heatmap-layer')) {
             map.removeLayer('heatmap-layer');
           }
-          
+
           if (map.getSource('heatmap-source')) {
             map.removeSource('heatmap-source');
           }
@@ -575,4 +587,5 @@
     });
   </script>
 </body>
-</html> 
+
+</html>
