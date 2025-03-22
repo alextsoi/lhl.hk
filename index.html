@@ -2,225 +2,240 @@
 <html>
 
 <head>
-	<title>Hiking Map</title>
-	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-	<script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
-	<link href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css" rel="stylesheet" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<link href="css/main.css" rel="stylesheet" />
-	<script src="https://npmcdn.com/@turf/turf@5.1.6/turf.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js"></script>
+  <title>Hiking Map</title>
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href="css/main.css" rel="stylesheet" />
+  <script src="https://npmcdn.com/@turf/turf@5.1.6/turf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js"></script>
 </head>
 
 <body>
-	<div id="map-wrapper">
-		<div id="map"></div>
-		<div id="map-list">
-			<ul id="map-list-items"></ul>
-		</div>
-	</div>
-	<button id="toggle-style">Toggle Style</button>
-	<script>
-		function reduceMarks(range, n){
-			var marks=[]
-			for( var i = 0 ; i < range.length ; i += n){
-				marks.push(range[i]);
-			}
-			return marks;
-		}
+  <div id="map-wrapper">
+    <div id="map"></div>
+    <div id="map-list">
+      <ul id="map-list-items"></ul>
+    </div>
+  </div>
+  <button id="toggle-style">Toggle Style</button>
+  <script>
+    var extra = [51, 55, 66];
 
-		var numberOfRoutes = 103;
-		mapboxgl.accessToken = "pk.eyJ1IjoieWZ0c29peWZ0c29pIiwiYSI6ImNqcnAweTdsbTE5OG40NHA5b2VvaW05Y3UifQ.W_WnayZjcP21QE4h-eFYYQ";
+    function reduceMarks(range, n) {
+      var marks = []
+      for (var i = 0; i < range.length; i += n) {
+        marks.push(range[i]);
+      }
+      return marks;
+    }
 
-		var currentStyle = 'styleFlat';
-		var colorStyles = {
-			styleFlat: {
-				// default: '#ef476f',
-				// selected: '#073b4c'
-				default: '#ee6c4d',
-				selected: '#3d5a80'
-			},
-			style3d: {
-				//default: '#ffadad',
-				//selected: '#caffbf',
-				default: '#ef476f',
-				selected: '#073b4c'
-			}
-		};
-		var mapStyle = {
-			style3d : {
-				container: "map",
-				otherStyleId: 'styleFlat',
-				otherStyle: 'Flat Mode',
-				// style: 'mapbox://styles/mapbox-map-design/ckhqrf2tz0dt119ny6azh975y',
-				style: 'mapbox://styles/yftsoiyftsoi/ckj1e03xy9j9a19sz6zrmkdz5',
-				pitch: 55,
-				bearing: -10,
-				zoom: 11.5,
-				// 9/418/223
-				center: [114.1535941, 22.3700556],
-			},
-			styleFlat : {
-				container: "map",
-				otherStyleId: 'style3d',
-				otherStyle: '3D Mode',
-				// style: "mapbox://styles/yftsoiyftsoi/cjrp3f4uk5m1n2spc8w7jrqoi",
-				style: "mapbox://styles/yftsoiyftsoi/ckuz0riu70dnu14lr9gcnmw5i",
-				zoom: 10.5,
-				center: [114.1535941, 22.3700556],
-			}
-		};
+    var numberOfRoutes = 104;
+    mapboxgl.accessToken = "pk.eyJ1IjoieWZ0c29peWZ0c29pIiwiYSI6ImNqcnAweTdsbTE5OG40NHA5b2VvaW05Y3UifQ.W_WnayZjcP21QE4h-eFYYQ";
 
-		var map;
-		var yearlyGoal = 500;
+    var currentStyle = 'styleFlat';
+    var colorStyles = {
+      styleFlat: {
+        // default: '#ef476f',
+        // selected: '#073b4c'
+        default: '#ee6c4d',
+        selected: '#3d5a80'
+      },
+      style3d: {
+        //default: '#ffadad',
+        //selected: '#caffbf',
+        default: '#ef476f',
+        selected: '#073b4c'
+      }
+    };
+    var mapStyle = {
+      style3d: {
+        container: "map",
+        otherStyleId: 'styleFlat',
+        otherStyle: 'Flat Mode',
+        // style: 'mapbox://styles/mapbox-map-design/ckhqrf2tz0dt119ny6azh975y',
+        style: 'mapbox://styles/yftsoiyftsoi/ckj1e03xy9j9a19sz6zrmkdz5',
+        pitch: 55,
+        bearing: -10,
+        zoom: 11.5,
+        // 9/418/223
+        center: [114.1535941, 22.3700556],
+      },
+      styleFlat: {
+        container: "map",
+        otherStyleId: 'style3d',
+        otherStyle: '3D Mode',
+        // style: "mapbox://styles/yftsoiyftsoi/cjrp3f4uk5m1n2spc8w7jrqoi",
+        style: "mapbox://styles/yftsoiyftsoi/ckuz0riu70dnu14lr9gcnmw5i",
+        zoom: 10.5,
+        center: [114.1535941, 22.3700556],
+      }
+    };
 
-		function triggerSorting() {
-			if(finished) return;
-			loaded++;
-			var keys = Object.keys(mapData).sort(function(a, b){return b-a});
-			var total = 0;
-			var yearTotal = 0;
-			var currentYear = (new Date()).getFullYear();
-			$('#map-list-items').html('');
-			keys.forEach(function(key){
-				var newTemplate = template.replace('{name}', mapData[key].name.replace('**', ''));
-				newTemplate = newTemplate.replace('{time}', mapData[key].time);
-				newTemplate = newTemplate.replace('{length}', mapData[key].length + 'km');
-				newTemplate = newTemplate.replace('{index}', key);
-				$('#map-list-items').append(newTemplate);
-				total += parseFloat(mapData[key].length);
-				// var thisYear = (new Date(mapData[key].time)).getFullYear();
-				var thisYear = parseInt(mapData[key].time.substr(0,4));
-				if(thisYear === currentYear){
-					yearTotal += parseFloat(mapData[key].length);
-				}
-			});
-			if(loaded === numberOfRoutes){
-				finished = true;
-				$('#map-list-items').prepend('<li class="summary"><span class="text">Yearly Total:</span><span class="total">' + yearTotal.toFixed(2) +' / ' + yearlyGoal + 'km</span></li>');
-				$('#map-list-items').prepend('<li class="summary"><span class="text">Total:</span><span class="total">' + total.toFixed(2) +'km</span></li>');
-			}
-		}
+    var map;
+    var yearlyGoal = 500;
 
-		function drawAgain(data, index){
-			if(data === null) data = mapData[index].data;
-			else{
-				// data.features[0].geometry.coordinates = reduceMarks(data.features[0].geometry.coordinates, 1);
-				mapData[index] = {
-					name: '#' + index + ' - ' + data.features[0].properties.name,
-					time: moment(data.features[0].properties.time).format('YYYY-MM-DD HH:mm:ss'),
-					length: turf.length(data.features[0]).toLocaleString(),
-					data: data
-				};
-			}
-			map.addSource('route' + index, {
-				'type': 'geojson',
-				'data': data
-			});
-			map.addLayer({
-				'id': 'route' + index,
-				'type': 'line',
-				'source': 'route' + index,
-				'layout': {
-					'line-join': 'round',
-					'line-cap': 'round'
-				},
-				'paint': {
-					// 'line-pattern': 'footprintpattern',
-					'line-color': colorStyles[currentStyle].default,
-					'line-width': 2
-				}
-			});
-			triggerSorting();
-		}
+    function triggerSorting() {
+      if (finished) return;
+      loaded++;
+      var keys = Object.keys(mapData).sort(function(a, b) {
+        return b - a
+      });
+      var total = 0;
+      var yearTotal = 0;
+      var currentYear = (new Date()).getFullYear();
+      $('#map-list-items').html('');
+      keys.forEach(function(key) {
+        var newTemplate = template.replace('{name}', mapData[key].name.replace('**', ''));
+        newTemplate = newTemplate.replace('{time}', mapData[key].time);
+        newTemplate = newTemplate.replace('{length}', mapData[key].length + 'km');
+        newTemplate = newTemplate.replace('{index}', key);
+        $('#map-list-items').append(newTemplate);
+        total += parseFloat(mapData[key].length);
+        // var thisYear = (new Date(mapData[key].time)).getFullYear();
+        var thisYear = parseInt(mapData[key].time.substr(0, 4));
+        if (thisYear === currentYear) {
+          yearTotal += parseFloat(mapData[key].length);
+        }
+      });
+      if (loaded === (numberOfRoutes + extra.length)) {
+        finished = true;
+        $('#map-list-items').prepend('<li class="summary"><span class="text">Yearly Total:</span><span class="total">' + yearTotal.toFixed(2) + ' / ' + yearlyGoal + 'km</span></li>');
+        $('#map-list-items').prepend('<li class="summary"><span class="text">Total:</span><span class="total">' + total.toFixed(2) + 'km</span></li>');
+      }
+    }
 
-		function onLoad() {
-			console.log('123');
-			if(currentStyle === 'style3d'){
-				map.addSource('mapbox-dem', {
-					'type': 'raster-dem',
-					'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-					'tileSize': 512,
-					'maxzoom': 14
-				});
-				// add the DEM source as a terrain layer with exaggerated height
-				map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 2 });
-			}
-			// map.loadImage('footprint_4.png', function (err, image) {
-			// map.addImage('footprintpattern', image);
-				for (var i = 1; i <= numberOfRoutes; i++) {
-					(function (index) {
-						if(typeof mapData[index] !== 'undefined'){
-							drawAgain(null, index);
-						}else{
-							$.getJSON('./geojson/' + index + '.geojson', function (data) {
-								drawAgain(data, index);
-							});
-						}
-					})(i);
-				}
-			// });
-		}
+    function drawAgain(data, index) {
+      if (data === null) data = mapData[index].data;
+      else {
+        // data.features[0].geometry.coordinates = reduceMarks(data.features[0].geometry.coordinates, 1);
+        mapData[index] = {
+          name: '#' + index + ' - ' + data.features[0].properties.name,
+          time: moment(data.features[0].properties.time).format('YYYY-MM-DD HH:mm:ss'),
+          length: turf.length(data.features[0]).toLocaleString(),
+          data: data
+        };
+      }
+      map.addSource('route' + index, {
+        'type': 'geojson',
+        'data': data
+      });
+      map.addLayer({
+        'id': 'route' + index,
+        'type': 'line',
+        'source': 'route' + index,
+        'layout': {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        'paint': {
+          // 'line-pattern': 'footprintpattern',
+          'line-color': colorStyles[currentStyle].default,
+          'line-width': 2
+        }
+      });
+      triggerSorting();
+    }
 
-		function refreshStyle(){
-			$('#toggle-style').text(mapStyle[currentStyle].otherStyle);
-			map = new mapboxgl.Map(mapStyle[currentStyle]);
-			map.on('load', onLoad);
-		}
+    function onLoad() {
+      console.log('123');
+      if (currentStyle === 'style3d') {
+        map.addSource('mapbox-dem', {
+          'type': 'raster-dem',
+          'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+          'tileSize': 512,
+          'maxzoom': 14
+        });
+        // add the DEM source as a terrain layer with exaggerated height
+        map.setTerrain({
+          'source': 'mapbox-dem',
+          'exaggeration': 2
+        });
+      }
+      // map.loadImage('footprint_4.png', function (err, image) {
+      // map.addImage('footprintpattern', image);
+      for (var i = 1; i <= numberOfRoutes; i++) {
+        (function(index) {
+          if (extra.indexOf(index) !== -1) {
+            if (typeof mapData[index] !== 'undefined') {
+              drawAgain(null, index + '-1');
+            } else {
+              $.getJSON('./geojson/' + index + '-1.geojson', function(data) {
+                drawAgain(data, index + '-1');
+              });
+            }
+          }
+          if (typeof mapData[index] !== 'undefined') {
+            drawAgain(null, index);
+          } else {
+            $.getJSON('./geojson/' + index + '.geojson', function(data) {
+              drawAgain(data, index);
+            });
+          }
+        })(i);
+      }
+      // });
+    }
 
-		refreshStyle();
+    function refreshStyle() {
+      $('#toggle-style').text(mapStyle[currentStyle].otherStyle);
+      map = new mapboxgl.Map(mapStyle[currentStyle]);
+      map.on('load', onLoad);
+    }
 
-		var mapData = {};
-		var selectedRoute = null;
-		var template = '<li data-index="{index}"><div class="title">{name}</div><div class="time">{time}</time><div class="length">{length}</div></li>';
-		var loaded = 0;
-		var finished = false;
+    refreshStyle();
 
-		var lastSelectedLayer = null;
-		$('body').on('click', '#map-list-items li', function(e){
-			e.preventDefault();
-			$('#map-list-items li').removeClass('active');
-			if($(this).is(':not(.summary)')){
-				$(this).addClass('active');
-				var index = $(this).data('index');
-				if(lastSelectedLayer){
-					map.setPaintProperty('route' + lastSelectedLayer, 'line-color', colorStyles[currentStyle].default);
-					map.setPaintProperty('route' + lastSelectedLayer, 'line-width', 1);
-				}
-				lastSelectedLayer = index;
-				if(typeof index !== 'undefined' && typeof mapData[index].data !== 'undefined'){
-					var coordinates = [];
-					if(mapData[index].data.features[0].geometry.type === 'LineString'){
-						coordinates = mapData[index].data.features[0].geometry.coordinates;
-					}else{
-						mapData[index].data.features[0].geometry.coordinates.map(function(coord){
-							coordinates = coordinates.concat(coord);
-						});
-					}
-					var bounds = coordinates.reduce(function (bounds, coord) {
-						return bounds.extend(coord);
-					}, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+    var mapData = {};
+    var selectedRoute = null;
+    var template = '<li data-index="{index}"><div class="title">{name}</div><div class="time">{time}</time><div class="length">{length}</div></li>';
+    var loaded = 0;
+    var finished = false;
 
-					map.fitBounds(bounds, {
-						padding: 20
-					});
-					map.setPaintProperty('route' + lastSelectedLayer, 'line-color', colorStyles[currentStyle].selected);
-					map.setPaintProperty('route' + lastSelectedLayer, 'line-width', 2);
-				}
-			}
-		});
+    var lastSelectedLayer = null;
+    $('body').on('click', '#map-list-items li', function(e) {
+      e.preventDefault();
+      $('#map-list-items li').removeClass('active');
+      if ($(this).is(':not(.summary)')) {
+        $(this).addClass('active');
+        var index = $(this).data('index');
+        if (lastSelectedLayer) {
+          map.setPaintProperty('route' + lastSelectedLayer, 'line-color', colorStyles[currentStyle].default);
+          map.setPaintProperty('route' + lastSelectedLayer, 'line-width', 1);
+        }
+        lastSelectedLayer = index;
+        if (typeof index !== 'undefined' && typeof mapData[index].data !== 'undefined') {
+          var coordinates = [];
+          if (mapData[index].data.features[0].geometry.type === 'LineString') {
+            coordinates = mapData[index].data.features[0].geometry.coordinates;
+          } else {
+            mapData[index].data.features[0].geometry.coordinates.map(function(coord) {
+              coordinates = coordinates.concat(coord);
+            });
+          }
+          var bounds = coordinates.reduce(function(bounds, coord) {
+            return bounds.extend(coord);
+          }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
 
-		$('#toggle-style').text(mapStyle[currentStyle].otherStyle);
-		$('#toggle-style').on('click', function(e){
-			if(!finished){
-				alert('We hiked a lot, please wait until the routes are downloaded!');
-				return;
-			}
-			currentStyle = mapStyle[currentStyle].otherStyleId;
-			refreshStyle();
-		});
+          map.fitBounds(bounds, {
+            padding: 20
+          });
+          map.setPaintProperty('route' + lastSelectedLayer, 'line-color', colorStyles[currentStyle].selected);
+          map.setPaintProperty('route' + lastSelectedLayer, 'line-width', 2);
+        }
+      }
+    });
 
-	</script>
+    $('#toggle-style').text(mapStyle[currentStyle].otherStyle);
+    $('#toggle-style').on('click', function(e) {
+      if (!finished) {
+        alert('We hiked a lot, please wait until the routes are downloaded!');
+        return;
+      }
+      currentStyle = mapStyle[currentStyle].otherStyleId;
+      refreshStyle();
+    });
+  </script>
 </body>
 
 </html>
