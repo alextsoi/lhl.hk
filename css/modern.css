@@ -67,6 +67,7 @@ body {
 }
 
 .sidebar {
+  position: relative;
   grid-area: sidebar;
   background-color: white;
   box-shadow: var(--shadow);
@@ -74,7 +75,6 @@ body {
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--gray-light);
-  overflow: hidden;
 }
 
 .sidebar-header {
@@ -131,8 +131,15 @@ body {
 }
 
 .map-list-container {
-  flex: 1;
+  background-color: white;
   overflow-y: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  transition: height 0.3s ease;
 }
 
 #map-list-items {
@@ -170,6 +177,7 @@ body {
 .map-container {
   grid-area: map;
   position: relative;
+  z-index: 1;
 }
 
 #map {
@@ -263,6 +271,7 @@ body {
       "header"
       "sidebar"
       "map";
+    overflow: hidden;
   }
   
   .header {
@@ -270,19 +279,30 @@ body {
   }
 
   .sidebar {
+    position: relative;
+    z-index: 2;
     height: auto;
     border-right: none;
     border-bottom: 1px solid var(--gray-light);
     transition: height 0.3s ease;
-    overflow: hidden;
   }
 
   .sidebar.mobile-show {
-    height: 80vh;
+    height: calc(100dvh - 64px);
+  }
+
+  .map-container {
+    height: 100%;
+  }
+
+  body {
+    overflow: hidden;
   }
 
   .map-list-container {
-    overflow-y: auto;
+    top: auto;
+    position: absolute;
+    z-index: 1;
   }
   
   #mobile-toggle-sidebar {
@@ -333,6 +353,10 @@ body {
   .progress-container {
     margin-top: 0.25rem;
     width: 100%;
+  }
+
+  .sidebar.mobile-show .map-list-container {
+    overflow-y: auto;
   }
 }
 

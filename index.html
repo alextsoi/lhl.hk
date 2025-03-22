@@ -382,6 +382,17 @@
           
           map.setPaintProperty('route' + lastSelectedLayer, 'line-color', colorStyles[currentStyle].selected);
           map.setPaintProperty('route' + lastSelectedLayer, 'line-width', 3);
+          
+          // Close sidebar in mobile view
+          if (window.innerWidth <= 768) {
+            $('.sidebar').removeClass('mobile-show');
+            $('#mobile-toggle-sidebar').removeClass('mobile-menu-open');
+            $('.sidebar').css('height', $('.stats-container').outerHeight() + 'px');
+            $('.map-list-container').css({
+              'top': $('.stats-container').outerHeight() + 'px',
+              'height': '0'
+            });
+          }
         }
       });
 
@@ -395,21 +406,6 @@
         refreshStyle();
       });
       
-      // Mobile sidebar toggle
-      $('#mobile-toggle-sidebar').on('click', function() {
-        $('.sidebar').toggleClass('mobile-show');
-        $(this).toggleClass('mobile-menu-open');
-        
-        // Immediately adjust height when toggling
-        if (window.innerWidth <= 768) {
-          if ($('.sidebar').hasClass('mobile-show')) {
-            $('.sidebar').css('height', '80vh');
-          } else {
-            $('.sidebar').css('height', $('.stats-container').outerHeight() + 'px');
-          }
-        }
-      });
-
       // Adjust sidebar height to match stats container on mobile
       function adjustSidebarHeight() {
         if (window.innerWidth <= 768) {
@@ -420,11 +416,60 @@
         } else {
           $('.sidebar').css('height', '');
         }
+        
+        // Adjust map-list-container height to fill available space
+        adjustMapListHeight();
+      }
+      
+      // Adjust map list container height
+      function adjustMapListHeight() {
+        if (window.innerWidth <= 768 && $('.sidebar').hasClass('mobile-show')) {
+          const headerHeight = $('.header').outerHeight();
+          const sidebarHeight = $('.sidebar').height();
+          const statsHeight = $('.stats-container').outerHeight();
+          $('.map-list-container').css({
+            'top': statsHeight + 'px',
+            'height': `calc(100dvh - ${statsHeight}px - ${headerHeight}px)`
+          });
+        } else if (window.innerWidth > 768) {
+          const sidebarHeight = $('.sidebar').height();
+          const statsHeight = $('.stats-container').outerHeight();
+          $('.map-list-container').css({
+            'top': statsHeight + 'px',
+            'height': (sidebarHeight - statsHeight) + 'px'
+          });
+        } else {
+          $('.map-list-container').css({
+            'top': $('.stats-container').outerHeight() + 'px',
+            'height': '0'
+          });
+        }
       }
 
       // Run on page load and when window is resized
       adjustSidebarHeight();
       $(window).on('resize', adjustSidebarHeight);
+      
+      // Mobile sidebar toggle with height adjustment
+      $('#mobile-toggle-sidebar').on('click', function() {
+        $('.sidebar').toggleClass('mobile-show');
+        $(this).toggleClass('mobile-menu-open');
+        
+        // Immediately adjust height when toggling
+        if (window.innerWidth <= 768) {
+          if ($('.sidebar').hasClass('mobile-show')) {
+            $('.sidebar').css('height', $('.stats-container').outerHeight() + 'px');
+            // Allow some time for the transition before adjusting map list height
+            setTimeout(adjustMapListHeight, 50);
+          } else {
+            $('.sidebar').css('height', $('.stats-container').outerHeight() + 'px');
+            $('.map-list-container').css({
+              'top': $('.stats-container').outerHeight() + 'px',
+              'height': '0'
+            });
+          }
+        }
+      });
 
       // Map layers dropdown toggle
       $('#toggle-layers').on('click', function(e) {
