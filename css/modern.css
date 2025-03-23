@@ -176,6 +176,23 @@ body {
   color: var(--gray);
 }
 
+.track-meta span {
+  margin-right: 0.5rem;
+}
+
+.download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray);
+  transition: color 0.2s ease;
+  margin-left: auto;
+}
+
+.download-btn:hover {
+  color: var(--primary);
+}
+
 .map-container {
   grid-area: map;
   position: relative;

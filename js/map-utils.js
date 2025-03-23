@@ -1,5 +1,5 @@
 /**
- * Map Utilities - Performance optimizations for hiking map
+ * Map Utils - Utility functions for the LHL Hiking Map
  */
 
 const MapUtils = {
@@ -198,40 +198,12 @@ const MapUtils = {
   },
   
   /**
-   * Creates a heatmap of track density
-   * @param {Object} map - Mapbox GL map instance
-   * @param {Array} tracksData - Array of all track data
+   * Creates a heatmap layer from track data
+   * @param {Object} map - Mapbox map instance
+   * @param {Array} tracks - Array of track data objects
    */
-  createTrackHeatmap: function(map, tracksData) {
-    // Combine all tracks into a single set of points
-    const points = {
-      type: 'FeatureCollection',
-      features: []
-    };
-    
-    tracksData.forEach(track => {
-      if (!track || !track.data || !track.data.features || track.data.features.length === 0) {
-        return;
-      }
-      
-      const feature = track.data.features[0];
-      const coordinates = feature.geometry.type === 'LineString' ? 
-        feature.geometry.coordinates : 
-        feature.geometry.coordinates.flat();
-      
-      // Sample every 10th point to reduce density
-      for (let i = 0; i < coordinates.length; i += 10) {
-        points.features.push({
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'Point',
-            coordinates: [coordinates[i][0], coordinates[i][1]]
-          }
-        });
-      }
-    });
-    
+  createTrackHeatmap: function(map, tracks) {
+    // Remove existing heatmap if present
     if (map.getLayer('heatmap-layer')) {
       map.removeLayer('heatmap-layer');
     }
@@ -240,11 +212,49 @@ const MapUtils = {
       map.removeSource('heatmap-source');
     }
     
+    // Create features array from tracks
+    const features = [];
+    
+    tracks.forEach(function(track) {
+      if (track.data && track.data.features && track.data.features.length > 0) {
+        const geometry = track.data.features[0].geometry;
+        
+        let coordinates = [];
+        if (geometry.type === 'LineString') {
+          coordinates = geometry.coordinates;
+        } else if (geometry.type === 'MultiLineString') {
+          geometry.coordinates.forEach(function(coordSet) {
+            coordinates = coordinates.concat(coordSet);
+          });
+        }
+        
+        // Sample coordinates to reduce density
+        const sampledCoords = this.sampleCoordinates(coordinates, 10);
+        
+        // Create point features from coordinates
+        sampledCoords.forEach(function(coord) {
+          features.push({
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'Point',
+              coordinates: coord
+            }
+          });
+        });
+      }
+    }, this);
+    
+    // Create GeoJSON source
     map.addSource('heatmap-source', {
       type: 'geojson',
-      data: points
+      data: {
+        type: 'FeatureCollection',
+        features: features
+      }
     });
     
+    // Add heatmap layer
     map.addLayer({
       id: 'heatmap-layer',
       type: 'heatmap',
@@ -257,20 +267,34 @@ const MapUtils = {
           ['linear'],
           ['heatmap-density'],
           0, 'rgba(0, 0, 255, 0)',
-          0.2, 'rgba(0, 255, 255, 0.2)',
-          0.4, 'rgba(0, 255, 0, 0.4)',
-          0.6, 'rgba(255, 255, 0, 0.6)',
-          0.8, 'rgba(255, 0, 0, 0.8)',
-          1, 'rgba(255, 0, 0, 1)'
+          0.1, 'royalblue',
+          0.3, 'cyan',
+          0.5, 'lime',
+          0.7, 'yellow',
+          1, 'red'
         ],
-        'heatmap-radius': 10,
+        'heatmap-radius': 8,
         'heatmap-opacity': 0.7
       }
-    });
+    }, 'waterway-label');
+  },
+  
+  /**
+   * Samples coordinates at a specific interval
+   * @param {Array} coordinates - Array of coordinate pairs
+   * @param {Number} interval - Sampling interval
+   * @returns {Array} Sampled coordinates
+   */
+  sampleCoordinates: function(coordinates, interval) {
+    const sampled = [];
+    for (let i = 0; i < coordinates.length; i += interval) {
+      sampled.push(coordinates[i]);
+    }
+    return sampled;
   }
 };
 
-// Export for use in browser or Node.js
+// Export the MapUtils object for both browser and Node.js environments
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = MapUtils;
 } 
