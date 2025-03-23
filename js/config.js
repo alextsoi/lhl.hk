@@ -5,7 +5,7 @@
 const CONFIG = {
   // Routes data
   routes: {
-    numberOfRoutes: 114,
+    numberOfRoutes: 115,
     extraRoutes: [51, 55, 66],
     yearlyGoal: 500
   },
